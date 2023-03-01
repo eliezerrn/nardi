@@ -32,7 +32,7 @@ public class Contrato {
         this.quantidadeHoras = quantidadeHoras;
     }
 
-    public BigDecimal valorTotal (){
+    public BigDecimal getValorTotal (){
         return getValorPorHora().multiply(getQuantidadeHoras());
     }
 }

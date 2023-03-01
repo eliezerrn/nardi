@@ -50,6 +50,12 @@ public class Trabalho {
 
     //TODO Eliezer terminar de fazer a média;
     public BigDecimal valorMedioMes (Integer ano, Integer mes){
-        return BigDecimal.TEN;
+						
+		BigDecimal total = getSalarioBase;
+		for(Contrato contrato : getContratos().stream().filter(f -> f.getData.)){
+				total = total.add(contrato.getValorTotal());
+		}			
+		
+        return total.divide(2);
     }
 }
