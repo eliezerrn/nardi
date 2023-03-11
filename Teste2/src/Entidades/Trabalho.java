@@ -1,9 +1,15 @@
 package Entidades;
 
 import Enum.Nivel;
+import Utillitarios.Util;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Trabalho {
 
@@ -48,14 +54,15 @@ public class Trabalho {
         getContratos().remove(contrato);
     }
 
-    //TODO Eliezer terminar de fazer a média;
     public BigDecimal valorMedioMes (Integer ano, Integer mes){
 						
-		BigDecimal total = getSalarioBase;
-		for(Contrato contrato : getContratos().stream().filter(f -> f.getData.)){
-				total = total.add(contrato.getValorTotal());
-		}			
+		BigDecimal total = getSalarioBase();
+        LocalDate dataInicioMes = Util.getData("01/" + mes + "/" + ano,null);
+        LocalDate dataFimMes = Util.getUltimaDataMes(mes);
+
+        total = total.add(getContratos().stream().filter(f -> f.getData().isAfter(dataInicioMes) && f.getData().isBefore(dataFimMes))
+                .map(Contrato::getValorTotal).reduce(BigDecimal.ZERO, BigDecimal::add));
 		
-        return total.divide(2);
+        return total.divide(BigDecimal.valueOf(2), RoundingMode.HALF_EVEN);
     }
 }
